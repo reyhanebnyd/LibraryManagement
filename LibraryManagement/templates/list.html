@@ -1,0 +1,53 @@
+{% extends 'base.html' %}  
+
+{% block title %}Book List{% endblock %}  
+
+{% block content %}  
+    <h1 class="text-3xl font-bold mb-4">Book List</h1>  
+
+    {% include 'search.html' %}  
+    {% include 'filter.html' %}  
+
+    {% if books %}  
+        <form method="post" action="{% url 'deletefilter' %}" class="mb-4">  
+            {% csrf_token %}  
+            <table class="min-w-full bg-white border border-gray-300">  
+                <thead>  
+                    <tr>  
+                        <th class="border border-gray-300 p-2">Select</th>  
+                        <th class="border border-gray-300 p-2">Title</th>  
+                        <th class="border border-gray-300 p-2">Author</th>  
+                        <th class="border border-gray-300 p-2">Publication Date</th>  
+                        <th class="border border-gray-300 p-2">Price</th>  
+                        <th class="border border-gray-300 p-2">Actions</th>  
+                    </tr>  
+                </thead>  
+                <tbody>  
+                    {% for book in books %}  
+                    <tr>  
+                        <td class="border border-gray-300 p-2">  
+                            <input type="checkbox" name="selected_books" value="{{ book.id }}">  
+                        </td>  
+                        <td class="border border-gray-300 p-2">{{ book.title }}</td>  
+                        <td class="border border-gray-300 p-2">{{ book.author.name }}</td>  
+                        <td class="border border-gray-300 p-2">{{ book.publication_date }}</td>  
+                        <td class="border border-gray-300 p-2">{{ book.price }}</td>  
+                        <td class="border border-gray-300 p-2">  
+                            <a href="{% url 'edit' book.id %}" class="bg-yellow-500 text-white px-2 py-1 rounded">Edit</a>  
+                            <form action="{% url 'delete' book.id %}" method="post" style="display:inline;">  
+                                {% csrf_token %}  
+                                <button type="submit" class="bg-red-500 text-white px-2 py-1 rounded">Delete</button>  
+                            </form>  
+                        </td>  
+                    </tr>  
+                    {% endfor %}  
+                </tbody>  
+            </table>  
+            <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded mt-4">Delete Selected Books</button>  
+        </form>  
+    {% else %}  
+        <p class="text-red-500">No books found for the selected criteria.</p>  
+    {% endif %}  
+
+    <a href="{% url 'add_book' %}" class="bg-blue-500 text-white px-4 py-2 rounded mt-4 inline-block">Add New Book</a>  
+{% endblock %}
