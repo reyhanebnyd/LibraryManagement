@@ -61,7 +61,6 @@ class DeleteSelectedBooksView(View):
     def post(self, request):  
         selected_books = request.POST.getlist('selected_books')  
         Book.objects.filter(id__in=selected_books).delete()  
-        print(selected_books) 
         return redirect('show_list')  
 
 class BookEditView(UpdateView):  
