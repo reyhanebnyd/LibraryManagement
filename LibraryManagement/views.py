@@ -45,15 +45,12 @@ class BookCreateView(CreateView):
     form_class = BookForm  
     template_name = 'add_book.html'  
     success_url = reverse_lazy('show_list')
-    def get_queryset(self):
-        return Book.objects.all()
     def get_context_data(self, **kwargs):  
         context = super().get_context_data(**kwargs)  
         context['author_form'] = AuthorForm() 
         return context  
 
     def form_valid(self, form):  
-        
         author_name = self.request.POST.get('new_author_name')  
         if author_name:  
             author, created = Author.objects.get_or_create(name=author_name)  

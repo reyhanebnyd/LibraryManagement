@@ -14,9 +14,15 @@ class BookForm(forms.ModelForm):
 
     def clean_publication_date(self):
         date = self.cleaned_data.get('publication_date')
-        if date is None or date.year < 1900:
+        if date is None or date > datetime.date.today():
             raise ValidationError('Please enter a valid publication date.')
         return date
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price <= 0:
+            raise ValidationError('Please enter a valid price.')
+
 
 
 class AuthorForm(forms.ModelForm):  
